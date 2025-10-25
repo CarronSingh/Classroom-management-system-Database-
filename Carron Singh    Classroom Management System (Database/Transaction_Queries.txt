@@ -1,0 +1,48 @@
+1. Module with the latest assessment deadline
+SELECT m.Module_Name, a.Assessment_Deadline
+FROM Module m
+JOIN Module_Student_Assessment msa ON m.Module_ID = msa.Module_ID
+JOIN Assessment a ON msa.Assessment_ID = a.Assessment_ID
+ORDER BY a.Assessment_Deadline DESC
+FETCH FIRST 1 ROWS ONLY;
+
+2. Top three students with the highest total score
+SELECT s.Student_Name, SUM(msa.Obtained_Marks) AS Total_Score
+FROM Student s
+JOIN Module_Student_Assessment msa ON s.Student_ID = msa.Student_ID
+GROUP BY s.Student_Name
+ORDER BY Total_Score DESC
+FETCH FIRST 3 ROWS ONLY;
+
+3. Total assessments and average score per program
+SELECT p.Program_Name, COUNT(a.Assessment_ID) AS Total_Assessments, AVG(msa.Obtained_Marks) AS Avg_Score
+FROM Program p
+JOIN Student s ON p.Program_ID = s.Program_ID
+JOIN Module_Student_Assessment msa ON s.Student_ID = msa.Student_ID
+JOIN Assessment a ON msa.Assessment_ID = a.Assessment_ID
+GROUP BY p.Program_Name;
+
+4. Students scoring above average in "Databases"
+SELECT s.Student_Name, msa.Obtained_Marks
+FROM Student s
+JOIN Module_Student_Assessment msa ON s.Student_ID = msa.Student_ID
+JOIN Module m ON msa.Module_ID = m.Module_ID
+WHERE m.Module_Name = 'Database Systems'
+AND msa.Obtained_Marks > (
+    SELECT AVG(Obtained_Marks)
+    FROM Module_Student_Assessment msa2
+    JOIN Module m2 ON msa2.Module_ID = m2.Module_ID
+    WHERE m2.Module_Name = 'Database Systems'
+);
+
+5. Pass/Fail remarks
+SELECT s.Student_Name, m.Module_Name,
+       SUM(msa.Obtained_Marks) AS Total_Marks,
+       CASE 
+           WHEN SUM(msa.Obtained_Marks) >= 40 THEN 'Pass'
+           ELSE 'Fail'
+       END AS Remarks
+FROM Student s
+JOIN Module_Student_Assessment msa ON s.Student_ID = msa.Student_ID
+JOIN Module m ON msa.Module_ID = m.Module_ID
+GROUP BY s.Student_Name, m.Module_Name;

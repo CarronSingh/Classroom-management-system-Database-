@@ -1,0 +1,25 @@
+INSERT INTO Program VALUES (101, 'BSc Computing', 4, 120);
+
+INSERT INTO Student VALUES (1, 'Ankit Sharma', TO_DATE('2000-03-11', 'YYYY-MM-DD'), 'Kathmandu', 'ankit@gmail.com', 101);
+
+INSERT INTO Module VALUES (201, 'Database Systems', 80);
+INSERT INTO Module VALUES (202, 'Software Engineering', 80);
+
+INSERT INTO Student_Module VALUES (1, 201);
+INSERT INTO Student_Module VALUES (1, 202);
+
+INSERT INTO Teacher VALUES (301, 'Sabita Koirala', 'sabita@trinity.edu.np', '9841000001');
+
+INSERT INTO Student_Teacher_Module VALUES (301, 201, 1);
+
+INSERT INTO Assessment VALUES (401, 'Final Exam', TO_DATE('2024-06-30', 'YYYY-MM-DD'), 50);
+
+INSERT INTO Module_Student_Assessment VALUES (401, 201, 1, 'Submitted', 48);
+
+INSERT INTO Announcement VALUES (501, 'Project Deadline Extended', TO_DATE('2024-05-05', 'YYYY-MM-DD'));
+
+INSERT INTO Announcement_Module_Teacher VALUES (501, 201, 1, 301);
+
+INSERT INTO Resources VALUES (601, 'Normalization Notes', 'PDF', 30);
+
+INSERT INTO Resource_Module_Student VALUES (601, 201, 1, 'Completed');
